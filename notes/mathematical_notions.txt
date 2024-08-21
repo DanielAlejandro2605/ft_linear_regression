@@ -1,0 +1,57 @@
+1. Álgebra Lineal
+
+    Vectores y Matrices: Comprender operaciones básicas como suma, multiplicación de matrices y transposición.
+    Producto punto: Concepto clave para calcular la predicción en regresión lineal.
+    Normas de vectores: Especialmente la norma L2​, que se utiliza en la minimización del error.
+    Inversión de matrices: Fundamental para resolver sistemas de ecuaciones lineales en la regresión lineal multivariable (aunque no siempre se utiliza en implementaciones prácticas debido a su costo computacional).
+
+2. Cálculo
+
+    Derivadas: Debes entender cómo calcular derivadas de funciones de una o varias variables, ya que se utilizan para minimizar la función de costo.
+    Gradiente: La derivada en múltiples dimensiones, esencial para implementar el descenso por gradiente.
+    Optimización: Conceptos básicos sobre cómo encontrar mínimos de funciones, especialmente en el contexto de funciones convexas.
+
+3. Estadística
+
+    Media, Varianza y Covarianza: Conceptos básicos necesarios para entender la relación entre variables.
+    Distribución Normal: Ayuda a comprender los supuestos de la regresión lineal y el comportamiento del error.
+    Correlación: Entender cómo se relacionan dos variables entre sí.
+    Métricas de error: Como el Error Cuadrático Medio (MSE) que se minimiza en la regresión lineal.
+
+4. Métodos Numéricos
+
+    Método de los mínimos cuadrados: La base teórica para la regresión lineal. Es necesario entender cómo se deriva y cómo se resuelve.
+    Algoritmos de optimización: Como el descenso por gradiente, para encontrar los parámetros óptimos de la regresión.
+    Regularización (opcional): Conceptos como Ridge (L2) y Lasso (L1) para mejorar la generalización del modelo.
+
+5. Conceptos de Machine Learning
+
+    Overfitting y Underfitting: Entender cómo balancear la complejidad del modelo y la capacidad de generalizar.
+    Conjunto de entrenamiento y prueba: Cómo dividir los datos para evaluar el rendimiento del modelo.
+    Validación cruzada: Técnica para evaluar la capacidad de generalización del modelo.
+
+6. Teoría de la Información (Opcional)
+
+    Entropía y información mutua: No es estrictamente necesario para la implementación básica, pero puede ser útil para un entendimiento más profundo del modelo y su capacidad para capturar relaciones en los datos.
+
+7. Programación en Python
+
+    Manipulación de datos con Numpy: Para manejar vectores, matrices y operaciones matemáticas de manera eficiente.
+    Manejo de datasets: Con bibliotecas como Pandas para cargar y preprocesar los datos.
+    Visualización: Usar Matplotlib o Seaborn para visualizar los resultados y entender mejor los datos.
+
+8. Conceptos adicionales avanzados (Opcional)
+
+    Regularización: Técnicas como L1 y L2 que se pueden incorporar para evitar el sobreajuste.
+    Métodos de cierre (como pseudoinversa de Moore-Penrose): Útil para casos en los que la matriz no es invertible en regresión lineal multivariable.
+    
+    
+Cual es el rol de las matrices en un algoritmo de regresion lineal ? 
+Que es el punto producto ? Que me servira para calcular la prediccion en regresion lineal ?
+Que es la normalizacion de vectores?  Especialmente la norma L2​, que se utiliza en la minimización del error.
+Inversion de matrices ? 
+
+Derivada de una funcion de una o dos variables -> Minimizar la funcion de costo
+Gradiente: La derivada en múltiples dimensiones, esencial para implementar el descenso por gradiente.
+Optimización: Conceptos básicos sobre cómo encontrar mínimos de funciones, especialmente en el contexto de funciones convexas.
+
