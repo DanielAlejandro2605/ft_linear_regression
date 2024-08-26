@@ -1,0 +1,5 @@
+---------------------------------------
+Gradient descent!
+(np.float64(-1106.0198809926176), np.float64(6331.8333333332885))
+(w,b) found by gradient descent: ( -0.0214,8499.5996)
+The plot has been saved in ../plots/plot_regression_line.png!

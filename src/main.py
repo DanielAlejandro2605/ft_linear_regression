@@ -13,7 +13,9 @@ from modules.plotting import plot_data,plot_with_regression_line, \
                             plot_deviation, \
                             plot_cost_function_only_w, \
                             plot_cost_function_only_b
-
+# Feature scaling
+from modules.feature_scaling import normalization, standardization, denormalize_coefficients, denormalize_coefficients_2
+# Gradient descent
 from modules.gradient_descent_try import gradient_descent
 # Get params
 from modules.get_regression_params import get_regression_params
@@ -26,49 +28,36 @@ def main_menu():
     Displays the main menu for user interaction and processes user choices.
     """
     # Reading the file
-    df = pd.read_csv('../data/data_example.csv')
-
+    df = pd.read_csv('../data/data.csv')
+    # Transform dataframe to numpy array
     data_frame = df.to_numpy()
-
     # Getting km data from dataframe
     original_data_km = df['km'].to_numpy()
     # Getting price data from dataframe
     original_data_price = df['price'].to_numpy()
-    
+
+    # Normalized data
+    normalized_x = normalization(original_data_km)
+    # print(normalized_x)
+    print('---------------------------------------')
+    # Standardized data
+    standardized_x = standardization(original_data_km)
+    # print(standardized_x)
+    # Gradient descent    
 
     # partial_derivative_of_w(data_km, data_price)
     # partial_derivative_of_b(data_km, data_price)
 
+    w, b = gradient_descent(standardized_x, original_data_price)
 
+    print(f'{w, b}')
 
-    # Calculate the Frobenius norm
-    frobenius_norm = np.linalg.norm(data_frame, 'fro')
-
-    # Normalize the matrix
-    normalized_matrix = data_frame / frobenius_norm
-
-    # print('Original Matrix:')
-    # print(data_frame)
-    # print('nFrobenius Norm:')
-    # print(frobenius_norm)
-    # print('nNormalized Matrix:')
-    # print(normalized_matrix)
-
-    print(normalized_matrix[0])
-
-    dataset = pd.DataFrame({'km': normalized_matrix[:, 0], 'price': normalized_matrix[:, 1]})
-
-    print(dataset)
-    # Getting km data from dataframe
-    data_km = dataset['km'].to_numpy()
-    # Getting price data from dataframe
-    data_price = dataset['price'].to_numpy()
-
-    w_final, b_final = gradient_descent(data_km, data_price)
+    w_final, b_final = denormalize_coefficients_2(original_data_km, w, b)
 
     print(f"(w,b) found by gradient descent: ({w_final:8.4f},{b_final:8.4f})")
 
     plot_with_regression_line(original_data_km, original_data_price, w_final, b_final)
+
     # while True:
     #     os.system('clear')
     #     print("\n--- Main Menu ---")

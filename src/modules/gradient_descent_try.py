@@ -14,11 +14,11 @@ def partial_derivative_cost_function_of_w(data_x, data_y, w, b):
     m = data_x.shape[0]
     # Compute linear function hypothesis
     f_wb = w * data_x + b
-
     # Compute the deviation from the real value scaled by x
     deviation = (f_wb - data_y) * data_x
     # Getting the derivative (sum of deviation)
     derivative_of_w = (1 / m) * np.sum(deviation)
+
     return derivative_of_w
     
 def partial_derivative_cost_function_of_b(data_x, data_y, w, b):
@@ -32,36 +32,36 @@ def partial_derivative_cost_function_of_b(data_x, data_y, w, b):
     derivative_of_b = (1 / m) * np.sum(deviation)
     return derivative_of_b
 
-def compute_gradient(x, y, w, b): 
-    """
-    Computes the gradient for linear regression 
-    Args:
-      x (ndarray (m,)): Data, m examples 
-      y (ndarray (m,)): target values
-      w,b (scalar)    : model parameters  
-    Returns
-      dj_dw (scalar): The gradient of the cost w.r.t. the parameters w
-      dj_db (scalar): The gradient of the cost w.r.t. the parameter b     
-     """
+# def compute_gradient(x, y, w, b): 
+#     """
+#     Computes the gradient for linear regression 
+#     Args:
+#       x (ndarray (m,)): Data, m examples 
+#       y (ndarray (m,)): target values
+#       w,b (scalar)    : model parameters  
+#     Returns
+#       dj_dw (scalar): The gradient of the cost w.r.t. the parameters w
+#       dj_db (scalar): The gradient of the cost w.r.t. the parameter b     
+#      """
     
-    # Number of training examples
-    m = x.shape[0]
+#     # Number of training examples
+#     m = x.shape[0]
 
-    dj_dw = 0
-    dj_db = 0
+#     dj_dw = 0
+#     dj_db = 0
     
-    for i in range(m):  
-        f_wb = w * x[i] + b 
-        dj_dw_i = (f_wb - y[i]) * x[i] 
-        dj_db_i = f_wb - y[i] 
-        dj_db += dj_db_i
-        dj_dw += dj_dw_i
+#     for i in range(m):  
+#         f_wb = w * x[i] + b 
+#         dj_dw_i = (f_wb - y[i]) * x[i] 
+#         dj_db_i = f_wb - y[i] 
+#         dj_db += dj_db_i
+#         dj_dw += dj_dw_i
 
 
-    dj_dw = dj_dw / m 
-    dj_db = dj_db / m 
+#     dj_dw = dj_dw / m 
+#     dj_db = dj_db / m 
         
-    return dj_dw, dj_db
+#     return dj_dw, dj_db
 
 def gradient_descent(data_x, data_y, initial_w=0, initial_b=0):
     # Start with some w, b, as zero for example
@@ -86,13 +86,14 @@ def gradient_descent(data_x, data_y, initial_w=0, initial_b=0):
     b = initial_b
 
     for i in range(10000):
-        dj_dw, dj_db = compute_gradient(data_x, data_y, w , b)
+        dj_dw = partial_derivative_cost_function_of_w(data_x, data_y, w, b)
+        dj_db = partial_derivative_cost_function_of_b(data_x, data_y, w, b)
+        # dj_dw, dj_db = compute_gradient(data_x, data_y, w , b)
 
         if math.isnan(w) or math.isnan(b) or math.isinf(w) or math.isinf(b):
             print("Overflow detected! Stopping gradient descent.")
             break
-
-
+    
         w = w - learning_rate * dj_dw
         b = b - learning_rate * dj_db
 

@@ -26,6 +26,8 @@ def gradient_descent(data_x, data_y, initial_w=0, initial_b=0, learning_rate=0.0
     print(x_std)
     normalized_x = (data_x - x_mean) / x_std
 
+    print(normalized_x)
+
     # Inicialización de los coeficientes
     w = initial_w
     b = initial_b
@@ -54,7 +56,7 @@ def gradient_descent(data_x, data_y, initial_w=0, initial_b=0, learning_rate=0.0
     return w_original, b_original, cost_history
 
 # Reading the file
-df = pd.read_csv('../data/data_example.csv')
+df = pd.read_csv('../data/data.csv')
 # Getting km data from dataframe
 data_x = df['km'].to_numpy()
 # Getting price data from dataframe
