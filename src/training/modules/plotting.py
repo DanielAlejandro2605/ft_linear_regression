@@ -4,25 +4,25 @@ import matplotlib.pyplot as plt
 
 from .cost_function import compute_cost_ft
 
-def plot_data(data_km, data_price, plot_path='../plots/plot_data.png'):
+def plot_data(data_km: np.ndarray, data_price: np.ndarray, plot_path: str = '../../plots/plot_data.png') -> None:
     """
-    Plots the data points.
+    Plots the data points as a scatter plot.
 
     Args:
-    data_km : array-like
-        Kilometers data.
-    data_price : array-like
-        Price data.
-    plot_path (str)
-        Path to save the plot image.
+        data_km (np.ndarray): Feature data representing kilometers.
+        data_price (np.ndarray): Target values representing prices.
+        plot_path (str, optional): Path to save the plot image.
+
+    Returns:
+        None
     """
     # Clear the current figure to prevent overlaying of plots
     plt.clf()
 
-    # To show the relationship between two numerical variables
+    # Create a scatter plot of the data
     plt.scatter(data_km, data_price, color='blue', marker='x')
 
-    # Labels
+    # Set labels and title
     plt.xlabel('Kilometers')
     plt.ylabel('Price')
     plt.title('Scatter Plot')
@@ -31,21 +31,20 @@ def plot_data(data_km, data_price, plot_path='../plots/plot_data.png'):
     plt.savefig(plot_path)
     print(f'The plot has been saved in {plot_path}!')
 
-def plot_with_regression_line(data_km, data_price, w, b, plot_path='../plots/plot_regression_line.png'):
+
+def plot_with_regression_line(data_km: np.ndarray, data_price: np.ndarray, w: float, b: float, plot_path: str = '../../plots/plot_regression_line.png') -> None:
     """
     Plots the data points and a regression line based on the given parameters.
-    
+
     Args:
-    data_km : array-like
-        Kilometers data.
-    data_price : array-like
-        Price data.
-    w (float)
-        Slope of the regression line.
-    b (float)
-        Y-intercept of the regression line.
-    plot_path (str)
-        Path to save the plot image.
+        data_km (np.ndarray): Feature data representing kilometers.
+        data_price (np.ndarray): Target values representing prices.
+        w (float): Slope of the regression line.
+        b (float): Y-intercept of the regression line.
+        plot_path (str, optional): Path to save the plot image.
+
+    Returns:
+        None
     """
     # Clear the current figure to prevent overlaying of plots
     plt.clf()
@@ -73,21 +72,19 @@ def plot_with_regression_line(data_km, data_price, w, b, plot_path='../plots/plo
     print(f'The plot has been saved in {plot_path}!')
 
 
-def plot_deviation(data_km, data_price, w=0.03, b=5000, plot_path='../plots/plot_deviation.png'):
+def plot_deviation(data_km: np.ndarray, data_price: np.ndarray, w: float = 0.03, b: float = 5000, plot_path: str = '../../plots/plot_deviation.png') -> None:
     """
-    Displays the deviation of each data point with respect to the regression line.
-    
+    Displays the deviation of each data point from the regression line.
+
     Args:
-    data_km : array-like
-        Kilometers data.
-    data_price : array-like
-        Price data.
-    w (float)
-        Slope of the regression line.
-    b (float)
-        Y-intercept of the regression line.
-    plot_path (str)
-        Path to save the plot image.
+        data_km (np.ndarray): Feature data representing kilometers.
+        data_price (np.ndarray): Target values representing prices.
+        w (float, optional): Slope of the regression line.
+        b (float, optional): Y-intercept of the regression line.
+        plot_path (str, optional): Path to save the plot image.
+
+    Returns:
+        None
     """
     # Clear the current figure to prevent overlaying of plots
     plt.clf()
@@ -96,7 +93,6 @@ def plot_deviation(data_km, data_price, w=0.03, b=5000, plot_path='../plots/plot
     plt.scatter(data_km, data_price, color='blue', marker='x', label='Data')
     
     # Define the range of x values for plotting the regression line
-    # The np.linspace() function in NumPy generates an array of numbers equidistant between two specified values
     x_range = np.linspace(min(data_km), max(data_km), 100)
     
     # Compute y values for the regression line
@@ -109,8 +105,6 @@ def plot_deviation(data_km, data_price, w=0.03, b=5000, plot_path='../plots/plot
     predicted_prices = w * data_km + b
 
     # Draw vertical lines from each data point to the regression line
-    # Returns an iterator of tuples, where each tuple contains elements matched by position of the original iterables.
-    # It is useful for traversing several iterables in parallel in an orderly fashion.
     for km, observed_price, predicted_price in zip(data_km, data_price, predicted_prices):
         plt.plot([km, km], [observed_price, predicted_price], color='gray', linestyle='--', linewidth=0.7)
     
@@ -124,40 +118,69 @@ def plot_deviation(data_km, data_price, w=0.03, b=5000, plot_path='../plots/plot
     plt.savefig(plot_path)
     print(f'The plot has been saved in {plot_path}!')
 
-def plot_cost_function_only_w(data_km, data_price, plot_path='../plots/plot_cost_function_only_w.png'):
+def plot_cost_function_only_w(data_km: np.ndarray, data_price: np.ndarray, plot_path: str = '../../plots/plot_cost_function_only_w.png') -> None:
+    """
+    Plots the cost function J(w) while varying only the slope (w) and keeping the intercept (b) fixed.
+
+    Args:
+        data_km (np.ndarray): Feature data
+        data_price (np.ndarray): Target values
+        plot_path (str, optional): The path where the plot will be saved.
+
+    Returns:
+        None
+    """
     # Clear the current figure to prevent overlaying of plots
     plt.clf()
-    # Define ranges for w and b
+    
+    # Define ranges for w
     w_values = np.linspace(-2.5, 2.5, 100)
 
-    # Compute the cost for each combination of w and b
+    # Compute the cost for each value of w while b is fixed
     j_w = np.array([compute_cost_ft(data_km, data_price, w) for w in w_values])
 
-    # Create a scatter plot of the data
+    # Plot the cost function J(w)
     plt.plot(w_values, j_w)
+    
     # Setting labels and title
     plt.xlabel('w')
-    plt.ylabel('J (w)')
-    plt.title('Cost function')
+    plt.ylabel('J(w)')
+    plt.title('Cost Function J(w)')
+    
     # Save the plot
     plt.savefig(plot_path)
     print(f'The plot has been saved in {plot_path}!')
 
-def plot_cost_function_only_b(data_km, data_price, plot_path='../plots/plot_cost_function_only_b.png'):
+
+def plot_cost_function_only_b(data_km: np.ndarray, data_price: np.ndarray, plot_path: str = '../../plots/plot_cost_function_only_b.png') -> None:
+    """
+    Plots the cost function J(b) while varying only the intercept (b) and keeping the slope (w) fixed.
+
+    Args:
+        data_km (np.ndarray): Feature data.
+        data_price (np.ndarray): Target values.
+        plot_path (str, optional): The path where the plot will be saved.
+
+    Returns:
+        None
+    """
     # Clear the current figure to prevent overlaying of plots
     plt.clf()
-    # Define ranges for w and b
+    
+    # Define ranges for b
     b_values = np.linspace(0, 10000, 100)
 
-    # Compute the cost for each combination of w and b
+    # Compute the cost for each value of b while w is fixed
     j_b = np.array([compute_cost_ft(data_km, data_price, 0, b) for b in b_values])
 
-    # Create a scatter plot of the data
+    # Plot the cost function J(b)
     plt.plot(b_values, j_b)
+    
     # Setting labels and title
     plt.xlabel('b')
-    plt.ylabel('J (b)')
-    plt.title('Cost function')
+    plt.ylabel('J(b)')
+    plt.title('Cost Function J(b)')
+    
     # Save the plot
     plt.savefig(plot_path)
     print(f'The plot has been saved in {plot_path}!')
