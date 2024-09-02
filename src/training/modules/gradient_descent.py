@@ -8,6 +8,8 @@ from .plotting import plot_with_regression_line
 from modules.feature_scaling import standardization, denormalize_coefficients
 # Cost function
 from .cost_function import compute_cost_ft
+# Import plot of cost function
+from .plotting import plot_cost_function_scatter
 
 
 # Derivatives (partial derivatives) are numbers (scalars) that indicate the slope of the cost function at a specific point.
@@ -72,7 +74,7 @@ def partial_derivative_cost_function_of_b(data_x: np.ndarray, data_y: np.ndarray
 
 def gradient_descent(data_x: np.ndarray, \
                     data_y: np.ndarray,  \
-                    initial_w: float, initial_b: float, learning_rate: float, tolerance: float = 1e-6, max_iterations: int = 10000):
+                    initial_w: float, initial_b: float, learning_rate: float, tolerance: float = 1e-8, max_iterations: int = 5000):
     """
     Performs gradient descent to optimize w and b for a linear regression model.
     
@@ -90,15 +92,26 @@ def gradient_descent(data_x: np.ndarray, \
     """
     w = initial_w
     b = initial_b
+
+    # For plot function
+    costs = []
+    iterations = []
     
     for i in range(max_iterations):
         # Compute gradients
         dj_dw = partial_derivative_cost_function_of_w(data_x, data_y, w, b)
         dj_db = partial_derivative_cost_function_of_b(data_x, data_y, w, b)
 
+
         # Update parameters
         new_w = w - learning_rate * dj_dw
         new_b = b - learning_rate * dj_db
+
+        # Compute and print the cost
+        if i % 100 == 0:
+            cost = compute_cost_ft(data_x, data_y, new_w, new_b)
+            costs.append(cost)
+            iterations.append(i)
 
         # Check for convergence (if the change is smaller than the tolerance)
         if abs(new_w - w) < tolerance and abs(new_b - b) < tolerance:
@@ -108,6 +121,8 @@ def gradient_descent(data_x: np.ndarray, \
         # Update w and b for the next iteration
         w = new_w
         b = new_b
+
+    plot_cost_function_scatter(iterations, costs)
 
     return w, b
 
@@ -125,8 +140,8 @@ def save_coefficients_to_file(w_final: float, b_final: float, file_path: str) ->
     """
     try:
         with open(file_path, 'w+') as file:
-            file.write(f"w_final: {w_final:.4f}\n")
-            file.write(f"b_final: {b_final:.4f}\n")
+            file.write(f"w_final: {w_final}\n")
+            file.write(f"b_final: {b_final}\n")
         print(f"Coefficients have been saved to {file_path}.")
     except IOError as e:
         print(f"An error occurred while trying to write to the file: {e}")
@@ -162,6 +177,8 @@ def lauch_gradient_descent(original_data_x: np.ndarray, original_data_y: np.ndar
     w_final, b_final = denormalize_coefficients(original_data_x, w, b)
 
     print(f"(w,b) found by gradient descent: ({w_final:8.4f},{b_final:8.4f})")
+
+    print(f"(w,b) found by gradient descent: ({w_final},{b_final})")
 
     plot_with_regression_line(original_data_x, original_data_y, w_final, b_final)
 

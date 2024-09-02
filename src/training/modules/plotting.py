@@ -59,7 +59,7 @@ def plot_with_regression_line(data_km: np.ndarray, data_price: np.ndarray, w: fl
     y_range = w * x_range + b
     
     # Plot the regression line
-    plt.plot(x_range, y_range, color='red', label=f'Regression: y = {w}x + {b}')
+    plt.plot(x_range, y_range, color='red', label=f'Regression: y = {w:.4f}x + {b:.4f}')
     
     # Set labels and title
     plt.xlabel('Kilometers')
@@ -184,3 +184,31 @@ def plot_cost_function_only_b(data_km: np.ndarray, data_price: np.ndarray, plot_
     # Save the plot
     plt.savefig(plot_path)
     print(f'The plot has been saved in {plot_path}!')
+
+def plot_cost_function_scatter(iterations: list, costs: list, plot_path: str = '../../plots/cost_function_scatter.png') -> None:
+    """
+    Creates a scatter plot of the cost function versus iterations.
+
+    Args:
+        iterations (list): List of iteration numbers.
+        costs (list): List of corresponding cost values.
+        plot_path (str, optional): Path where the plot will be saved.
+
+    Returns:
+        None
+    """
+    # Clear the current figure to prevent overlaying of plots
+    plt.clf()
+    
+    # Create scatter plot
+    plt.scatter(iterations, costs, color='blue', marker='o')
+    
+    # Setting labels and title
+    plt.xlabel('Iteration')
+    plt.ylabel('Cost')
+    plt.title('Cost Function Scatter Plot')
+    
+    # Save the plot
+    plt.savefig(plot_path)
+    print(f'The plot has been saved in {plot_path}!')
+    
