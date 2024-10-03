@@ -18,8 +18,6 @@ from modules.plotting import plot_data,plot_with_regression_line, \
 from modules.gradient_descent import lauch_gradient_descent
 # Get params
 from modules.get_regression_params import get_regression_params
-# Cost function
-from modules.cost_function import compute_cost_ft
 
 # Setting signal
 signal.signal(signal.SIGINT, signal_handler)
@@ -31,13 +29,11 @@ def main_menu():
     # Reading the file
     df = pd.read_csv('../../data/data.csv')
     # Transform dataframe to numpy array
-    data_frame = df.to_numpy()
+    # data_frame = df.to_numpy()
     # Getting km data from dataframe
     original_data_km = df['km'].to_numpy()
     # Getting price data from dataframe
     original_data_price = df['price'].to_numpy()
-
-    lauch_gradient_descent(original_data_km, original_data_price)
     
     actions = {
         '1': lambda: plot_data(original_data_km, original_data_price),
@@ -49,24 +45,24 @@ def main_menu():
         '7': exit_program
     }
 
-    # while True:
-    #     print("\n--- Main Menu ---")
-    #     print("1. Plot raw data")
-    #     print("2. Plot data with regression line for hypothesis")
-    #     print("3. Plot data with regression line for hypothesis and deviation")
-    #     print("4. Plot cost function only with 'w' parameter")
-    #     print("5. Plot cost function only with 'b' parameter")
-    #     print("6. Lauch gradient descent algorithm")
-    #     print("7. Exit")
-    #     choice = input("Choose an option: ")
+    while True:
+        print("\n--- Main Menu ---")
+        print("1. Plot raw data")
+        print("2. Plot data with regression line for hypothesis")
+        print("3. Plot data with regression line for hypothesis and deviation")
+        print("4. Plot cost function only with 'w' parameter")
+        print("5. Plot cost function only with 'b' parameter")
+        print("6. Lauch gradient descent algorithm")
+        print("7. Exit")
+        choice = input("Choose an option: ")
 
-    #     action = actions.get(choice)
-    #     if action:
-    #         action()
-    #     else:
-    #         print("Invalid option. Please try again.")
+        action = actions.get(choice)
+        if action:
+            action()
+        else:
+            print("Invalid option. Please try again.")
         
-    #     time.sleep(3)
+        time.sleep(3)
 
 def exit_program():
     print("Exiting the program.")
