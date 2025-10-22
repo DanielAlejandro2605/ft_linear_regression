@@ -9,15 +9,9 @@ import time
 # Signal
 from modules.signal_handler import signal_handler
 # Plotting
-from modules.plotting import plot_data,plot_with_regression_line, \
-                            plot_deviation, \
-                            plot_cost_function_only_w, \
-                            plot_cost_function_only_b
-
+from modules.plotting import plot_data
 # Gradient descent
-from modules.gradient_descent import lauch_gradient_descent
-# Get params
-from modules.get_regression_params import get_regression_params
+from modules.gradient_descent import lauch_gradient_descent, lauch_gradient_descent_no_animation
 
 # Setting signal
 signal.signal(signal.SIGINT, signal_handler)
@@ -26,34 +20,36 @@ def main_menu():
     """
     Displays the main menu for user interaction and processes user choices.
     """
-    # Reading the file
-    df = pd.read_csv('../../data/data.csv')
-    # Transform dataframe to numpy array
-    # data_frame = df.to_numpy()
-    # Getting km data from dataframe
-    original_data_km = df['km'].to_numpy()
-    # Getting price data from dataframe
-    original_data_price = df['price'].to_numpy()
-    
+    try:
+        # Reading the file
+        df = pd.read_csv('../../data/data.csv')
+        # Getting km data from dataframe
+        original_data_km = df['km'].to_numpy()
+        # Getting price data from dataframe
+        original_data_price = df['price'].to_numpy()
+    except FileNotFoundError:
+        print("Error: data.csv file not found!")
+        print("Please make sure the data file exists at: data/data.csv")
+        print("Exiting...")
+        return
+    except Exception as e:
+        print(f"Error reading data file: {e}")
+        print("Exiting...")
+        return
+        
     actions = {
         '1': lambda: plot_data(original_data_km, original_data_price),
-        '2': lambda: plot_with_regression_line(original_data_km, original_data_price, *get_regression_params()),
-        '3': lambda: plot_deviation(original_data_km, original_data_price, *get_regression_params()),
-        '4': lambda: plot_cost_function_only_w(original_data_km, original_data_price),
-        '5': lambda: plot_cost_function_only_b(original_data_km, original_data_price),
-        '6': lambda: lauch_gradient_descent(original_data_km, original_data_price),
-        '7': exit_program
+        '2': lambda: lauch_gradient_descent_no_animation(original_data_km, original_data_price),
+        '3': lambda: lauch_gradient_descent(original_data_km, original_data_price),
+        '4': exit_program,
     }
 
     while True:
         print("\n--- Main Menu ---")
-        print("1. Plot raw data")
-        print("2. Plot data with regression line for hypothesis")
-        print("3. Plot data with regression line for hypothesis and deviation")
-        print("4. Plot cost function only with 'w' parameter")
-        print("5. Plot cost function only with 'b' parameter")
-        print("6. Lauch gradient descent algorithm")
-        print("7. Exit")
+        print("1. Plot data")
+        print("2. Run gradient descent algorithm (no animation)")
+        print("3. Run gradient descent algorithm (creates animated GIF)")
+        print("4. Exit")
         choice = input("Choose an option: ")
 
         action = actions.get(choice)
@@ -62,7 +58,7 @@ def main_menu():
         else:
             print("Invalid option. Please try again.")
         
-        time.sleep(3)
+        time.sleep(1)
 
 def exit_program():
     print("Exiting the program.")

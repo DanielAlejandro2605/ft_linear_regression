@@ -15,34 +15,41 @@ def load_coefficients_from_file(file_path: str) -> Tuple[float, float]:
     Loads the final coefficients of the regression line from a specified file.
 
     Args:
-        file_path (str): Path to the file where the coefficients are stored.
+        file_path (str): Path to the JSON file where the coefficients are stored.
 
     Returns:
         Tuple[float, float]: A tuple containing the slope (w) and intercept (b) of the regression line.
-    
-    Raises:
-        ValueError: If the file does not contain valid float values or has an unexpected format.
+        Returns (0.0, 0.0) if file doesn't exist or is invalid.
     """
+    import json
+    import os
+    
+    if not os.path.exists(file_path):
+        print(f"Warning: Coefficients file '{file_path}' not found.")
+        print("Using default values: w_final = 0.0, b_final = 0.0")
+        print("Please run training first to generate proper coefficients.")
+        return 0.0, 0.0
+    
     try:
         with open(file_path, 'r') as file:
-            lines = file.readlines()
-            if len(lines) != 2:
-                raise ValueError("The file does not contain the expected number of lines.")
+            coefficients = json.load(file)
+            
+            if 'w_final' not in coefficients or 'b_final' not in coefficients:
+                print("Warning: JSON file does not contain the expected coefficient keys.")
+                print("Using default values: w_final = 0.0, b_final = 0.0")
+                return 0.0, 0.0
 
-            w_line = lines[0].strip()
-            b_line = lines[1].strip()
-
-            # Extracting float values from the lines
-            w_final = float(w_line.split(':')[1].strip())
-            b_final = float(b_line.split(':')[1].strip())
+            w_final = float(coefficients['w_final'])
+            b_final = float(coefficients['b_final'])
 
         return w_final, b_final
     
-    except (IOError, ValueError) as e:
-        print(f"An error occurred while trying to read the file: {e}")
-        raise
+    except (IOError, ValueError, json.JSONDecodeError) as e:
+        print(f"Error reading coefficients file: {e}")
+        print("Using default values: w_final = 0.0, b_final = 0.0")
+        return 0.0, 0.0
 
-file_path = 'coefficients.txt'
+file_path = 'coefficients.json'
 
 def estimate_price(w_final: float, b_final: float):
 
@@ -68,7 +75,14 @@ try:
     # Getting coefficients from file
     w_final, b_final = load_coefficients_from_file(file_path)
     print(f"Loaded coefficients: w_final = {w_final:.4f}, b_final = {b_final:.4f}")
+    
+    # Check if coefficients are default values (indicating no training has been done)
+    if w_final == 0.0 and b_final == 0.0:
+        print("\n" + "="*50)
+        print("WARNING: Using default coefficients (0.0, 0.0)")
+        print("="*50 + "\n")
+    
     # Making prediction
     estimate_price(w_final, b_final)
-except ValueError as e:
+except Exception as e:
     print(f"Failed to load coefficients: {e}")

@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from PIL import Image
+import io
 
 from .cost_function import compute_cost_ft
 
@@ -25,7 +27,7 @@ def plot_data(data_km: np.ndarray, data_price: np.ndarray, plot_path: str = '../
     # Set labels and title
     plt.xlabel('Kilometers')
     plt.ylabel('Price')
-    plt.title('Scatter Plot')
+    plt.title('Repartition of data')
 
     # Save the plot
     plt.savefig(plot_path)
@@ -211,4 +213,46 @@ def plot_cost_function_scatter(iterations: list, costs: list, plot_path: str = '
     # Save the plot
     plt.savefig(plot_path)
     print(f'The plot has been saved in {plot_path}!')
+
+def create_animation_frame(data_x: np.ndarray, data_y: np.ndarray, w: float, b: float, cost_history: list, iteration: int) -> Image.Image:
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
     
+    ax1.scatter(data_x, data_y, alpha=0.6, color='blue', label='Data')
+    x_line = np.linspace(data_x.min(), data_x.max(), 100)
+    y_line = w * x_line + b
+    ax1.plot(x_line, y_line, 'r-', linewidth=2, label=f'Regression Line (w={w:.4f}, b={b:.4f})')
+    ax1.set_xlabel('Kilometers')
+    ax1.set_ylabel('Price')
+    ax1.set_title(f'Gradient Descent - Iteration {iteration}')
+    ax1.legend()
+    ax1.grid(True)
+    
+    ax2.plot(range(len(cost_history)), cost_history, 'g-', linewidth=2)
+    ax2.set_xlabel('Iteration')
+    ax2.set_ylabel('Cost')
+    ax2.set_title('Cost Function')
+    ax2.grid(True)
+    
+    plt.tight_layout()
+    
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', dpi=100, bbox_inches='tight', pad_inches=0.1)
+    buf.seek(0)
+    frame = Image.open(buf)
+    plt.close()
+    
+    return frame
+
+def save_animation_gif(frames: list, output_path: str) -> None:
+    import os
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    
+    if frames:
+        frames[0].save(output_path, 
+                      save_all=True, 
+                      append_images=frames[1:], 
+                      duration=200, 
+                      loop=0)
+        print(f"GIF animation saved to {output_path}")
+    else:
+        print("No frames created!")
