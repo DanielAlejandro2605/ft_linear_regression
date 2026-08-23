@@ -58,7 +58,7 @@ def estimate_price(w_final: float, b_final: float):
         try:
             kms_to_predict: float = float(input("Enter the value of kms to predict: "))
             if not (kms_to_predict > 0):
-                print("The value of kilometers must be positive.Please try again.")
+                print("The value of kilometers must be positive. Please try again.")
                 continue
             break
 
@@ -67,7 +67,7 @@ def estimate_price(w_final: float, b_final: float):
 
     price : float = w_final * kms_to_predict + b_final
 
-    print(f"A car with {kms_to_predict} has a price of {price:.4f}")
+    print(f"A car with {kms_to_predict} kms has a price of {price:.4f}")
 
 try:
     # Setting signal
