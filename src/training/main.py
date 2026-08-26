@@ -1,9 +1,6 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
-import cursor
 import signal
-import os
 import time
 
 # Signal
